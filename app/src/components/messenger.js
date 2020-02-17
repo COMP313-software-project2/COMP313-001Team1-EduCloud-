@@ -4,7 +4,8 @@ import classNames from 'classnames'
 import _ from 'lodash'
 import {OrderedMap} from 'immutable'
 import {ObjectID} from '../helpers/objectid.js'
-
+import SearchUser from './search-user'
+import moment from 'moment'
 
 export default class Messenger extends Component{
 
@@ -14,15 +15,60 @@ export default class Messenger extends Component{
 
         this.state={
             height:window.innerHeight,
-            newMessage: 'Hello there...'
+            newMessage: 'Hello there...',
+            searchUser:"",
+            showSearchUser: false,
          
         }
 
         this._onResize = this._onResize.bind(this);
-        this.addTestMessages = this.addTestMessages.bind(this);
         this.handleSend = this.handleSend.bind(this);
         this.renderMessage = this.renderMessage.bind(this);
         this.scrollMessagesToBottom = this.scrollMessagesToBottom.bind(this);
+        this._onCreateChannel = this._onCreateChannel.bind(this);
+        this.renderChannelTitle = this.renderChannelTitle.bind(this);
+    }
+
+    renderChannelTitle(channel = {}){
+        const {store} = this.props;
+
+        const members = store.getMembersFromChannel(channel);
+
+
+        const names=[];
+
+        members.forEach((user) => {
+
+            const name = _.get(user, 'name');
+            names.push(name);
+        });
+        console.log(names);
+
+        return <h2>{_.join(names, ', ')}</h2>
+    };
+
+    _onCreateChannel(){
+        const {store} =  this.props;
+
+        // const currentUser = store.getCurrentUser();
+        // const currentUserId = _.get(currentUser, '_id');
+
+        const channelId = new ObjectID().toString();
+        const channel = {
+            _id: channelId,
+            title: 'New Message',
+            lastMessage: "",
+            members: new OrderedMap(),
+            messages: new OrderedMap(),
+            isNew: true,
+            created: new Date(),
+        };
+
+        //channel.members = channel.members.set(currentUserId, true);
+
+        store.onCreateNewChannel(channel);
+
+        
     }
 
     scrollMessagesToBottom() {
@@ -96,52 +142,7 @@ export default class Messenger extends Component{
 
             console.log("Component did mount");
             window.addEventListener('resize', this._onResize);
-            this.addTestMessages();
-        }
-
-        addTestMessages(){
-           
-            const {store}  = this.props;
-
-            // const store =this.props.store;
-
-            for(let i = 0; i < 100; i ++) {
-                let isMe = false;
-
-            if(i % 3 === 0) {
-                isMe= true
-            }
-                const newMsg = {
-                    _id: `${i}`,
-                    body: `The body of message ${i}`,
-                    author: `Author: ${i}`,
-                    me: isMe
-                }
-                console.log(typeof i);
-                store.addMessage(i, newMsg);
-                //i need upsate my componen and re-render it now because new messages added 
-            }
-
-                   //create some test channels
-                   for(let c = 0; c < 10; c++) {
-                    let newChannel = {
-                        _id: `${c}`,
-                        title: `Channel title ${c}`,
-                        lastMessage:`Hey there here...${c}`,
-                        members: new OrderedMap({
-                            '2':true,
-                            '3':true,
-                            '1':true,
-                        }),
-                        messages: new OrderedMap(),
-                    }
-                    const msgId = `${c}`;
-                    const moreMsgId = `${c + 1}`
-                    newChannel.messages = newChannel.messages.set(msgId, true);
-                    newChannel.messages = newChannel.messages.set(moreMsgId, true);
-                    store.addChannel(c, newChannel);
-                }
-
+       
         }
 
         componentWillUnmount() {
@@ -167,24 +168,58 @@ render(){
     const channels = store.getChannels();
     const members = store.getMembersFromChannel(activeChannel);
 
-
-    // if(activeChannel){
-    // console.log("Active channel is: ", activeChannel);
-    // console.log("Message in channel", activeChannel._id, messages);  
-    // }
     return (
      <div style={style} className="app-messenger">
                 <div className="header">
                     <div className="left">
                         <button className="left-action"><i className="icon-paperplane"/></button>
-                        <button className="right-action"><i className="icon-edit-modify-streamline"/></button>
+                        <button onClick={this._onCreateChannel} className="right-action"><i className="icon-edit-modify-streamline"/></button>
                         <h2>Messenger</h2>
                       
                     </div>    
-                    <div className="content"><h2>{_.get(activeChannel, 'title', '')}</h2></div>
+                    <div className="content">
+                    {_.get(activeChannel, 'isNew') ? <div className="toolbar">
+                            <label>To</label>
+                            <input placeholder="Type name of person..." onChange={(event)=>{
+                                const searchUserText = _.get(event, 'target.value');
+                                
+                                {/* console.log("searching for user with name: ",searchUserText)  */}
+
+                                this.setState({
+                                    searchUser: searchUserText,
+                                    showSearchUser: true,
+                                });   
+
+                            }}
+                            type="text" value={this.state.searchUser}></input>
+
+                                {this.state.showSearchUser ? <SearchUser 
+                                    onSelect={(user) => {
+                                       
+                                    
+                                        this.setState({
+                                            showSearchUser: false,
+                                            searchUser:'',
+
+
+                                        }, () => {
+                                            
+                                            const userId = _.get(user, '_id');
+                                            const channelId = _.get(activeChannel, '_id');
+
+                                            store.addUserToChannel(channelId, userId);
+                                        });
+                                    }}
+
+                                     search={this.state.searchUser} store={store}/> : null }
+                        
+                        </div> : <h2>{_.get(activeChannel, 'title', '')}</h2>
+
+                    }
+                        </div>
                     <div className="right">
                         <div className="user-bar">
-                            <div className="profile-name">James Ray</div>
+                            <div className="profile-name">Julia Ray</div>
                             <div className="profile-image"></div>
                     </div>
                     </div>
@@ -204,7 +239,7 @@ render(){
                                             <div className="user-image">
                                             </div>
                                     <div className="channel-info">
-                                        <h2>{channel.title}</h2>
+                                        {this.renderChannelTitle(channel)}
                                         <p>{channel.lastMessage}</p>
                                     </div>
                                 </div>
@@ -240,26 +275,30 @@ render(){
                             })}
 
                             </div>
-                           <div className="messenger-input">
+
+                            {activeChannel ? <div className="messenger-input">
                                <div className="text-input">
                                     <textarea onKeyUp = {(event) => {
 
                                         if(event.key ==='Enter' && !event.shiftKey){
-                                        this.handleSend();}
+                                        this.handleSend();
                                         }
-                                        }
+                                    }}
                                     onChange={(event) => {
                                         //console.log("Text is changing: ", event.target.value);
                                         this.setState({newMessage: _.get(event, 'target.value')});
 
                                         }} value={this.state.newMessage} placeholder ="Write your message" />
-                               </div>
-                               <div className="actions">
-                                   <button onClick={this.handleSend} className="send">Send</button>
-                               </div>
-                               </div>
+                                    </div>
+                                    <div className="actions">
+                                        <button onClick={this.handleSend} className="send">Send</button>
+                                    </div> 
+                               </div> : null }
+
                                </div>
                         <div className="sidebar-right">
+
+                            { members.size > 0 ? <div>
                             <h2 className="title">Members</h2>
                             <div className="members">
                             {members.map((member, key) => {
@@ -267,17 +306,18 @@ render(){
                                     return (
                                         
                                     <div className="member">
-                                        <div className="user-image"></div>
+                                        <div className="user-image">
+                                            <img src={_.get(member,'avatar')} alt="..."></img>
+                                        </div>
                                         <div className="member-info">
                                             <h2>{member.name}</h2>
-                                            <p>Joined: 3 days ago</p>
+                                            <p>Joined:{moment(member.created).fromNow().toString()}</p>
                                         </div>
                                     </div>
                                     )
                                 })}
                                
-
-                                </div>
+                                </div></div> :  null}
 
                             </div>
 
