@@ -1,0 +1,278 @@
+@import "font";
+@import 'variable';
+@import "https://fonts.googleapis.com/css?family=Open+Sans:400,600";
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+
+  body {
+    color: $body-color;
+    font-size: 13px;
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin:0
+  }
+
+  .app-messenger {
+    display: flex;
+    flex-direction: column;
+    .header {
+        height: $header-height;
+        display: flex;
+        flex-direction: row;
+        border-bottom: 1px solid $border-color;
+        .left {
+            width: $left-sidebar-width;
+            position:relative;
+            .left-action {
+              position: absolute;
+              left: 8px;
+              top: 0;
+            }
+            .right-action {
+              position: absolute;
+              right: 8px;
+              top: 0;
+            }
+            h2 {
+              line-height: $header-height;
+              font-size: 14px;
+              font-weight: 600;
+              display: block;
+              text-align: center;
+            }
+            button {
+              background: none;
+              line-height: $header-height;
+              border: 0 none;
+              font-size: 20px;
+              cursor: pointer;
+      
+            }
+        }
+        .content{
+            flex-grow:1;
+
+            h2 {
+                line-height: $header-height;
+                text-align: center;
+              }
+        }
+        .right {
+            width: $right-sidebar-width;
+            .user-bar {
+              line-height: $header-height;
+              display: flex;
+              justify-content: flex-end;
+              padding: 0 10px;
+              .profile-name {
+                padding-right: 10px;
+              }
+              .profile-image {
+                line-height: $header-height;
+                img {
+                  width: 30px;
+                  height: 30px;
+                  border-radius: 50%;
+                  margin: 10px 0 0 0;
+                }
+              }
+            }
+        }
+    }
+    .main {
+        height: 100%;
+        display: flex;
+        overflow:hidden;
+        .sidebar-left{
+            width: $left-sidebar-width;
+            border-right: 1px solid $border-color;
+            
+        }
+        .sidebar-right{
+            border-left: 1px solid $border-color;
+            width: $right-sidebar-width;
+            
+        }
+        .content {
+            flex-grow: 1;
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+            .messages {
+                flex-grow:1;
+            }
+            .messenger-input {
+                border-top: 1px solid $border-color;
+                height: 80px;
+                display: flex;
+                flex-direction: row;
+                .text-input {
+                    flex-grow: 1;
+                    textarea{
+                        border: 0 none;
+                        width: 100%;
+                        height: 100%;
+                        padding: 8px 15px;
+                    }
+                }
+                .actions{
+                    button.send{
+                        background-color: $primary-color;
+                        color: #FFF;
+                        border: 0 none;
+                        padding: 7px 15px;
+                        line-height: 50px;;
+                    }
+
+
+                }
+
+            }
+        }  
+        }
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100%;
+    .message {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      margin: 15px;
+      .message-user-image {
+        img {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+        }
+      }
+      .message-body {
+        padding-left: 10px;
+        .message-author {
+  
+        }
+        .message-text {
+          background: rgba(0, 0, 0, 0.05);
+          padding: 10px;
+          border-radius: 10px;
+        }
+      }
+  
+      &.me {
+        justify-content: flex-end;
+        .message-body {
+          .message-text {
+            background: $primary-color;
+            color: #FFF;
+          }
+        }
+      }
+    }
+  }
+
+
+.channels {
+    cursor: pointer;
+    overflow-y: auto;
+    height: 100%;
+    .channel {
+      cursor: pointer;
+      display: flex;
+      border-bottom: 1px solid $border-color;
+      padding: 8px;
+      .channel-info {
+        flex-grow: 1;
+        padding-left: 8px;
+        padding-right: 8px;
+        overflow: hidden;
+        h2 {
+          font-size: 13px;
+          font-weight: 400;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        p {
+          font-size: 12px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+      &.active {
+        background: rgba(0, 0, 0, 0.05);
+      }
+      &.notify {
+        .channel-info {
+          p {
+            color: $primary-color;
+          }
+        }
+      }
+    }
+  }
+
+  .members {
+
+    .member {
+      display: flex;
+      border-bottom: 1px solid $border-color;
+      padding: 8px;
+    //   .user-image {
+    //     width: 30px;
+    //     position: relative;
+    //     img {
+    //       width: 30px;
+    //       height: 30px;
+    //       border-radius: 50%;
+    //     }
+    //     .user-status{
+    //       width: 8px;
+    //       height: 8px;
+    //       display: block;
+    //       position: absolute;
+    //       right: 0;
+    //       bottom: 10px;
+    //       border: 1px solid #FFFFFF;
+    //       background: #cccccc;
+    //       -webkit-border-radius: 50%;
+    //       -moz-border-radius: 50%;
+    //       border-radius: 50%;
+    //       &.online{
+    //         background: $primary-color;
+    //       }
+    //     }
+       
+      .member-info {
+        padding-left: 8px;
+        flex-grow: 1;
+        h2 {
+          font-size: 14px;
+        }
+        p {
+  
+          font-size: 12px;
+        }
+      }
+      
+    }
+}
+    h2.title {
+        font-size: 16px;
+        font-weight: 600;
+        padding: 5px;
+        color: rgba(0, 0, 0, 0.8);
+        text-align: center;
+      }
+  
