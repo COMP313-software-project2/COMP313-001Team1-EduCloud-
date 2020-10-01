@@ -141,6 +141,9 @@ body {
   border-left: 1px solid rgba(0, 0, 0, 0.05);
   width: 300px;
 }
+.app-messenger .main .sidebar-right .title {
+  padding: 10px;
+}
 .app-messenger .main .content {
   flex-grow: 1;
   overflow: hidden;
@@ -152,7 +155,7 @@ body {
 }
 .app-messenger .main .content .messenger-input {
   border-top: 1px solid rgba(0, 0, 0, 0.05);
-  height: 80px;
+  height: 50px;
   display: flex;
   flex-direction: row;
 }
@@ -166,7 +169,7 @@ body {
   padding: 8px 15px;
 }
 .app-messenger .main .content .messenger-input .actions button.send {
-  background-color: #2ecc71;
+  background: #2ecc71;
   color: #FFF;
   border: 0 none;
   padding: 7px 15px;
@@ -206,114 +209,114 @@ body {
   color: #FFF;
 }
 
-.channels {
-  cursor: pointer;
+.chanels {
   overflow-y: auto;
   height: 100%;
 }
-.channels .channel {
+.chanels .chanel {
   cursor: pointer;
   display: flex;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   padding: 8px;
 }
-.channels .channel .user-image {
+.chanels .chanel .user-image {
   width: 30px;
 }
-.channels .channel .user-image img {
+.chanels .chanel .user-image img {
   max-width: 100%;
 }
-.channels .channel .user-image .channel-avatars {
+.chanels .chanel .user-image .channel-avatars {
   overflow: hidden;
   width: 30px;
   height: 30px;
   border-radius: 50%;
   background-color: #ccc;
+  position: relative;
 }
-.channels .channel .user-image .channel-avatars.channel-avatars-1 img {
+.chanels .chanel .user-image .channel-avatars.channel-avatars-1 img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
 }
-.channels .channel .user-image .channel-avatars.channel-avatars-2 img {
+.chanels .chanel .user-image .channel-avatars.channel-avatars-2 img {
   width: 50%;
   height: 100%;
   position: absolute;
   right: 0;
   top: 0;
 }
-.channels .channel .user-image .channel-avatars.channel-avatars-2 img:first-child {
+.chanels .chanel .user-image .channel-avatars.channel-avatars-2 img:first-child {
   left: 0;
   top: 0;
 }
-.channels .channel .user-image .channel-avatars.channel-avatars-3 img {
+.chanels .chanel .user-image .channel-avatars.channel-avatars-3 img {
   position: absolute;
   width: 50%;
   height: 50%;
   right: 0;
   top: 0;
 }
-.channels .channel .user-image .channel-avatars.channel-avatars-3 img:first-child {
+.chanels .chanel .user-image .channel-avatars.channel-avatars-3 img:first-child {
   left: 0;
   top: 0;
   width: 50%;
   height: 100%;
 }
-.channels .channel .user-image .channel-avatars.channel-avatars-3 img:last-child {
+.chanels .chanel .user-image .channel-avatars.channel-avatars-3 img:last-child {
   bottom: 0;
   right: 0;
   top: 15px;
   width: 50%;
   height: 50%;
 }
-.channels .channel .user-image .channel-avatars.channel-avatars-4 img {
+.chanels .chanel .user-image .channel-avatars.channel-avatars-4 img {
   position: absolute;
   width: 50%;
   height: 50%;
   right: 0;
   top: 0;
 }
-.channels .channel .user-image .channel-avatars.channel-avatars-4 img:first-child {
+.chanels .chanel .user-image .channel-avatars.channel-avatars-4 img:first-child {
   left: 0;
   top: 0;
   width: 50%;
   height: 100%;
 }
-.channels .channel .user-image .channel-avatars.channel-avatars-4 img:nth-child(3n) {
+.chanels .chanel .user-image .channel-avatars.channel-avatars-4 img:nth-child(3n) {
   bottom: 0;
   right: 0;
   top: 15px;
   width: 50%;
   height: 50%;
 }
-.channels .channel .user-image .channel-avatars.channel-avatars-4 img:last-child {
+.chanels .chanel .user-image .channel-avatars.channel-avatars-4 img:last-child {
   left: 0;
   bottom: 0;
   top: 15px;
 }
-.channels .channel .channel-info {
+.chanels .chanel .chanel-info {
   flex-grow: 1;
   padding-left: 8px;
   padding-right: 8px;
   overflow: hidden;
 }
-.channels .channel .channel-info h2 {
+.chanels .chanel .chanel-info h2 {
   font-size: 13px;
   font-weight: 400;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.channels .channel .channel-info p {
+.chanels .chanel .chanel-info p {
   font-size: 12px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.channels .channel.active {
+.chanels .chanel.active {
   background: rgba(0, 0, 0, 0.05);
 }
-.channels .channel.notify .channel-info p {
+.chanels .chanel.notify .chanel-info p {
   color: #2ecc71;
 }
 
@@ -361,9 +364,7 @@ body {
 h2.title {
   font-size: 16px;
   font-weight: 600;
-  padding: 5px;
   color: rgba(0, 0, 0, 0.8);
-  text-align: center;
 }
 
 .toolbar {
@@ -374,7 +375,7 @@ h2.title {
 }
 .toolbar span {
   line-height: 20px;
-  height: 20px;
+  height: 30px;
   background: #2ecc71;
   color: #FFF;
   cursor: pointer;

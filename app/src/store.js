@@ -17,7 +17,6 @@ export default class Store {
 
         this.user = this.getUserFromLocalStorage();
         this.users = new OrderedMap();
-     
 
         this.search = {
             users: new OrderedMap(),
@@ -36,6 +35,7 @@ export default class Store {
         return this.realtime.isConnected;
     }
     fetchUserChannels(){
+
         const userToken = this.getUserTokenId();
 
         if(userToken){
@@ -57,7 +57,7 @@ export default class Store {
                 });
 
 
-              const firstChannelId = _.get(channels, '[0]._id', null);
+                const firstChannelId = _.get(channels, '[0]._id', null);
 
                 this.fetchChannelMessages(firstChannelId);
 
@@ -69,20 +69,20 @@ export default class Store {
         }
     }
 
-    addUserToCache(user){
+    addUserToCache(user) {
 
-        //user.avatar - this.loadUserAvatar(user);
+        user.avatar = this.loadUserAvatar(user);
         const id = _.toString(user._id);
         this.users = this.users.set(id, user);
 
-         return user;
+
+        return user;
+
 
     }
 
-    getUserTokenId(){
-
+    getUserTokenId() {
         return _.get(this.token, '_id', null);
-        
     }
 
     loadUserAvatar(user) {
@@ -92,7 +92,7 @@ export default class Store {
 
     startSearchUsers(q = "") {
 
-        // query to backend server and get list of users.
+        // query to backend servr and get list of users.
         const data = {search: q};
 
         this.search.users = this.search.users.clear();
@@ -127,25 +127,25 @@ export default class Store {
             //console.log("searching errror", err);
         })
 
-}
-
-
-setUserToken(accessToken) {
-
-    if (!accessToken) {
-
-        this.localStorage.removeItem('token');
-        this.token = null;
-
-        return;
     }
 
-    this.token = accessToken;
-    localStorage.setItem('token', JSON.stringify(accessToken));
+    setUserToken(accessToken) {
 
-}
+        if (!accessToken) {
+
+            this.localStorage.removeItem('token');
+            this.token = null;
+
+            return;
+        }
+
+        this.token = accessToken;
+        localStorage.setItem('token', JSON.stringify(accessToken));
+
+    }
 
     getTokenFromLocalStore() {
+
 
         if (this.token) {
             return this.token;
@@ -165,6 +165,7 @@ setUserToken(accessToken) {
                 console.log(err);
             }
         }
+
         return token;
     }
 
@@ -181,7 +182,8 @@ setUserToken(accessToken) {
             console.log(err);
         }
 
-        if(user) {
+
+        if (user) {
 
             // try to connect to backend server and verify this user is exist.
             const token = this.getTokenFromLocalStore();
@@ -193,7 +195,9 @@ setUserToken(accessToken) {
                 }
             }
             this.service.get('api/users/me', options).then((response) => {
+
                 // this mean user is logged with this token id.
+
                 const accessToken = response.data;
                 const user = _.get(accessToken, 'user');
 
@@ -206,19 +210,18 @@ setUserToken(accessToken) {
 
             });
 
-            
         }
-
-
         return user;
     }
 
     setCurrentUser(user) {
 
-        //set temporary user avatar image url
+
+        // set temporary user avatar image url
         user.avatar = this.loadUserAvatar(user);
         this.user = user;
- 
+
+
         if (user) {
             localStorage.setItem('me', JSON.stringify(user));
 
@@ -226,7 +229,9 @@ setUserToken(accessToken) {
             const userId = `${user._id}`;
             this.users = this.users.set(userId, user);
         }
+
         this.update();
+
     }
 
     clearCacheData(){
@@ -235,7 +240,6 @@ setUserToken(accessToken) {
         this.messages = this.messages.clear();
         this.users = this.users.clear();
     }
-
     signOut() {
 
         const userId = _.toString(_.get(this.user, '_id', null));
@@ -280,26 +284,21 @@ setUserToken(accessToken) {
 
         });
     }
-
-
-    login(email = null, password = null){
+    login(email = null, password = null) {
 
         const userEmail = _.toLower(email);
-        
+
 
         const user = {
             email: userEmail,
             password: password,
         }
+        //console.log("Ttrying to login with user info", user);
 
-        
-        console.log("Trying to login with user info", user);
 
-            
-       
         return new Promise((resolve, reject) => {
 
-         
+
             // we call to backend service and login with user data
 
             this.service.post('api/users/login', user).then((response) => {
@@ -320,10 +319,10 @@ setUserToken(accessToken) {
 
                 this.fetchUserChannels();
 
+                //console.log("Got user login callback from the server: ", accessToken);
 
-                console.log("Got user login callback from the server", accessToken);
-            
-                }).catch((err) => {
+
+            }).catch((err) => {
 
                 console.log("Got an error login from server", err);
                 // login error
@@ -335,7 +334,7 @@ setUserToken(accessToken) {
 
         });
 
-      
+
     }
 
     removeMemberFromChannel(channel = null, user = null) {
@@ -359,18 +358,18 @@ setUserToken(accessToken) {
 
 
         const channel = this.channels.get(channelId);
-    
+
         if (channel) {
-    
+
             // now add this member id to channels members.
             channel.members = channel.members.set(userId, true);
             this.channels = this.channels.set(channelId, channel);
             this.update();
-            }
-    
         }
 
-    getSearchUsers(){
+    }
+
+    getSearchUsers() {
 
         return this.search.users.valueSeq();
     }
@@ -381,15 +380,15 @@ setUserToken(accessToken) {
         this.addChannel(channelId, channel);
         this.setActiveChannelId(channelId);
 
-  // console.log(JSON.stringify(this.channels.toJS()));
+        //console.log(JSON.stringify(this.channels.toJS()));
 
     }
 
-    getCurrentUser(){
+    getCurrentUser() {
 
         return this.user;
-
     }
+
 
     fetchChannelMessages(channelId){
 
@@ -405,13 +404,13 @@ setUserToken(accessToken) {
                 }
             }
 
-            this.service.get(`api/channels/${channelId}/messages`, options).then((response) => {
+             this.service.get(`api/channels/${channelId}/messages`, options).then((response) => {
 
 
 
-                channel.isFetchedMessages = true;
+                    channel.isFetchedMessages = true;
 
-                const messages = response.data;
+                    const messages = response.data;
 
                     _.each(messages, (message) => {
 
@@ -432,9 +431,9 @@ setUserToken(accessToken) {
 
 
         }
-
+        
     }
-    setActiveChannelId(id){
+    setActiveChannelId(id) {
 
         this.activeChannelId = id;
 
@@ -445,10 +444,10 @@ setUserToken(accessToken) {
     }
 
 
-    getActiveChannel(){
+    getActiveChannel() {
 
-        const channel = this.activeChannelId ? this.channels.get(this.activeChannelId) : this.channels.first();  
-        return channel;    
+        const channel = this.activeChannelId ? this.channels.get(this.activeChannelId) : this.channels.first();
+        return channel;
 
     }
 
@@ -467,7 +466,7 @@ setUserToken(accessToken) {
             this.channels = this.channels.set(channelId, channel);
         } else {
 
-           // fetch to the server with channel info
+            // fetch to the server with channel info
             this.service.get(`api/channels/${channelId}`).then((response) => {
 
 
@@ -478,29 +477,28 @@ setUserToken(accessToken) {
                     this.addUserToCache(user);
                 });*/
 
+                this.realtime.onAddChannel(channel);
 
-             this.realtime.onAddChannel(channel);
-            
+
             })
-
-    }
-    this.update();
+        }
+        this.update();
     }
 
     addMessage(id, message = {}) {
 
-        //we need to add user object who is author of this message
-        
-        console.log("Hey,: we need to send this message to backend", message);
+        // we need add user object who is author of this message
+
+
         const user = this.getCurrentUser();
         message.user = user;
 
         this.messages = this.messages.set(id, message);
 
-        //let's add new message id to current channel --> messages
+        // let's add new message id to current channel->messages.
 
         const channelId = _.get(message, 'channelId');
-        if(channelId){
+        if (channelId) {
 
             let channel = this.channels.get(channelId);
 
@@ -512,14 +510,14 @@ setUserToken(accessToken) {
 
                 action: 'create_channel',
                 payload: channel,
-                };
+            };
             this.realtime.send(obj);
 
 
-            //console.log("channel: ", channel);
+            //console.log("channel:", channel);
 
             // send to the server via websocket to creawte new message and notify to other members.
-           
+
             this.realtime.send(
                 {
                     action: 'create_message',
@@ -533,14 +531,14 @@ setUserToken(accessToken) {
             channel.isNew = false;
             this.channels = this.channels.set(channelId, channel);
 
+
         }
         this.update();
 
-
-        //console.log(JSON.stringify(this.messages.toJS()));
+        // console.log(JSON.stringify(this.messages.toJS()));
 
     }
-    
+
     getMessages() {
 
         return this.messages.valueSeq();

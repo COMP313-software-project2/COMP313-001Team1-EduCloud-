@@ -28,7 +28,7 @@ export default class UserBar extends Component {
 
         return (
             <div className="user-bar">
-            {me && !isConnected ? <div className="app-warning-state">Reconnecting... </div> : null}
+                {me && !isConnected ? <div className="app-warning-state">Reconnecting... </div> : null}
                 {!me ? <button onClick={() => {
 
                     this.setState({
@@ -54,6 +54,7 @@ export default class UserBar extends Component {
 
                 }} store={store}/> : null}
 
+
                 {this.state.showUserMenu ? <UserMenu
                     store={store}
                     onClose={() => {
@@ -63,8 +64,7 @@ export default class UserBar extends Component {
                         })
                     }}
 
-                    /> : null}
-         
+                /> : null}
 
             </div>
         );
