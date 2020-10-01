@@ -12,7 +12,6 @@ export default class App extends Component{
 			store: new Store(this),
 		}
 	}
-
 	render(){
 
 		const {store} = this.state;
