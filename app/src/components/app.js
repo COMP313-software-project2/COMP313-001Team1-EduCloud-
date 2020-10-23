@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Store from '../store'
 import Messenger from './messenger'
+import Navigation from './navigation'
 
 export default class App extends Component{
 
@@ -17,6 +18,7 @@ export default class App extends Component{
 		const {store} = this.state;
 		return <div className="app-wrapper">
 				<Messenger store={store} />
+				<Navigation store={store} />
 			</div>
 	}
 }
