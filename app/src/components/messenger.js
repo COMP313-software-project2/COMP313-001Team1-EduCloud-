@@ -11,7 +11,7 @@ import UserBar from './user-bar'
 export default class Messenger extends Component {
 
     constructor(props) {
-
+        console.log(props.store + "in messenger constructor")
         super(props);
 
         this.state = {
@@ -190,7 +190,7 @@ export default class Messenger extends Component {
     render() {
 
         const {store} = this.props;
-
+        console.log(store + " in messenger render()")
         const {height} = this.state;
 
         const style = {

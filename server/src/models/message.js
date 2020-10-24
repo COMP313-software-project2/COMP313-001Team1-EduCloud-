@@ -11,14 +11,10 @@ export default class Message {
 
 
     getChannelMessages(channelId, limit = 50, offset = 0){
-
         return new Promise((resolve, reject) => {
-
             channelId = new ObjectID(channelId);
-
             const query = [
                 {
-
                     $lookup: {
                         from: 'users',
                         localField: 'userId',
@@ -32,7 +28,6 @@ export default class Message {
                     },
                 },
                 {
-
                     $project: {
                         _id: true,
                         channelId: true,
@@ -63,32 +58,19 @@ export default class Message {
                 }
 
             ];
-
-
             this.app.db.collection('messages').aggregate(query, (err, results) => {
-
-                
-
                 return err ? reject(err): resolve(results)
 
             });
-
         })
-
     }
 
     create(obj) {
-
         return new Promise((resolve, reject) => {
-            
-
             let id = _.get(obj, '_id', null);
             id = _.toString(id);
-
             const userId = new ObjectID(_.get(obj, 'userId'));
             const channelId = new ObjectID(_.get(obj, 'channelId'));
-
-
             const message = {
                 _id: new ObjectID(id),
                 body: _.get(obj, 'body', ''),
@@ -96,14 +78,10 @@ export default class Message {
                 channelId: channelId,
                 created: new Date(),
             };
-
-            this.app.db.collection('messages').insertOne(message, (err, info) =>{
-
-              
-                if(err){
-                    return reject(err);
-                }
-
+                this.app.db.collection('messages').insertOne(message, (err, info) =>{
+                    if(err){
+                        return reject(err);
+                    }
                 // let update lastMessgage field to channel
                 this.app.db.collection('channels').findOneAndUpdate({_id: channelId}, {
                     $set: {
@@ -111,29 +89,15 @@ export default class Message {
                         updated: new Date(),
                     }
                 })
-
-
                 this.app.models.user.load(_.toString(userId)).then((user) =>{
-
                     _.unset(user, 'password');
                     _.unset(user, 'email');
-
                     message.user = user;
                     return resolve(message);
-
                 }).catch((err) => {
-
                     return reject(err);
                 });
-
-
             });
-
-
-
-
         });
-
-
     }
 }
