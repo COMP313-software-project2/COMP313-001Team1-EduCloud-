@@ -2,7 +2,7 @@ import {OrderedMap} from 'immutable'
 import _ from 'lodash'
 import Service from './service'
 import Realtime from './realtime'
-
+import avatar from './images/avatar.png'
 
 export default class Store {
     constructor(appComponent) {
@@ -88,7 +88,7 @@ export default class Store {
 
     loadUserAvatar(user) {
 
-        return `https://api.adorable.io/avatars/100/${user._id}.png`
+        return avatar;//`https://api.adorable.io/avatars/100/${user._id}.png`
     }
 
     startSearchUsers(q = "") {

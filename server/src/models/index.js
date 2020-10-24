@@ -3,6 +3,7 @@ import Token from './token'
 import Connection from './connection'
 import Channel from './channel';
 import Message from "./message";
+import Event from "./event";
 
 
 export default class Model{
@@ -15,6 +16,7 @@ export default class Model{
         this.token = new Token(app);
         this.channel = new Channel(app);
         this.message = new Message(app);
+        this.event = new Event(app);
         this.connection = new Connection(app);
     }
 }
