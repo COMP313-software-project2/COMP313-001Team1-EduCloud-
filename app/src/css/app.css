@@ -499,7 +499,7 @@ h2.title {
 }
 .user-bar .user-menu ul li {
   border-top: 1px solid rgba(0, 0, 0, 0.05);
-  padding: 8px;
+  /* padding: 8px; */
 }
 .user-bar .user-menu ul li button {
   background: none;
@@ -534,8 +534,9 @@ h2.title {
 
 .form-actions button {
   border: 0 none;
-  padding: 7px 15px;
+  padding: 0px 10px;
   text-align: center;
+  margin-left: 10px;
 }
 .form-actions button.primary {
   background: #2ecc71;
