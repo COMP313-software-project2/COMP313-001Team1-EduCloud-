@@ -188,7 +188,7 @@ export default class User{
     beforeSave(user, callback  = () =>{}){
         //fisr is validate user object before save to user collection
         let errors = [];
-        const fields = ['name', 'email', 'password'];
+        const fields = ['name', 'email', 'password','role'];
         const validations  = {
             name: {
                 errorMessage: 'Name is required ',
@@ -212,6 +212,16 @@ export default class User{
                 do: () => {
                     const password = _.get(user, 'password', '');
                     if (!password.length || password.length < 3) {
+                        return false;
+                    }
+                    return true;
+                }
+            },
+            role: {
+                errorMessage: 'Choose your role',
+                do: () => {
+                    const role = _.get(user, 'role', '');
+                    if (!role=='student' && !role=='mentor') {
                         return false;
                     }
                     return true;

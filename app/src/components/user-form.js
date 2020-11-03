@@ -14,9 +14,11 @@ export default class UserForm extends Component {
             message: null,
             isLogin: true,
             user: {
+                role:'',
                 name: '',
                 email: '',
-                password: ''
+                password: '',
+                
             },
             phone: '',
             isVerified: true,
@@ -26,8 +28,9 @@ export default class UserForm extends Component {
         }
 
         this.onSubmit = this.onSubmit.bind(this);
-        this.onTextFieldChange = this.onTextFieldChange.bind(this)
-
+        
+        this.onSelectionChange = this.onSelectionChange.bind(this);
+        this.onTextFieldChange = this.onTextFieldChange.bind(this);
         this.onClickOutside = this.onClickOutside.bind(this);
         this.onCodeFieldChange = this.onCodeFieldChange.bind(this);
         this.onPhoneFieldChange = this.onPhoneFieldChange.bind(this);
@@ -81,7 +84,7 @@ export default class UserForm extends Component {
                     })
                 });
             }else{
-                /* store.register(user).then((_)=> {
+                 store.register(user).then((_)=> {
                     this.setState({
                         message: {
                             body: 'User created.',
@@ -95,7 +98,7 @@ export default class UserForm extends Component {
                             }
                         })
                     })
-                }) */
+                }) /*
                 console.log("inside onsubmit function");
                 store.verifyUser(phone).then((res) => {
                     
@@ -105,7 +108,7 @@ export default class UserForm extends Component {
                 })
                 this.setState({
                     isVerified: false
-                })
+                })*/
             }
         })
     }
@@ -132,13 +135,24 @@ export default class UserForm extends Component {
        });
 
     }
+
+    onSelectionChange(event) {
+        console.log(event.target.value);
+        this.setState({
+            role: event.target.value
+        });
+ 
+    }
+
     onCodeFieldChange(event) {
         console.log(event.target.value);
         this.setState({
             code: event.target.value
         });
  
-     }
+    }
+
+
      onCheckCode() {
         const {store} = this.props;
          const {reqId,code,user} = this.state;
@@ -182,6 +196,13 @@ export default class UserForm extends Component {
                         <p className={classNames('app-message', _.get(message, 'type'))}>{_.get(message, 'body')}</p> : null}
 
                     {!isLogin ?  <div>
+                        <div className="form-item">
+                        <label>Position:</label>
+                        <select  onChange={this.onSelectionChange} type={'text'} name={"role"} >
+                        <option value="student">Student</option>
+                        <option value="mentor">Mentor</option>
+                            </select>
+                    </div>
                     <div className="form-item">
                         <label>Name</label>
                         <input placeholder={'Full name'} onChange={this.onTextFieldChange} type={'text'} value={_.get(user, 'name', '')} name={"name"} />

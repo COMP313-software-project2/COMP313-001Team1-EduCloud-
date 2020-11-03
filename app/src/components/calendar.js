@@ -5,16 +5,26 @@ import moment from 'moment'
 import Service from '../service'
 import PageEvent from './PageEvent'
 import PageEventEdit from './PageEventEdit'
+import Can from "../components/Can";
+
 
 const localizer = momentLocalizer(moment)
 
+
+
+
+
 const EventCalendar = (props) => {
+
+
+
   const [ events, setEvents ] = useState([])
   const [ selectedEventID, setSelectedEventID ] = useState('')
   const [open, setOpen] = useState(0)
   const [date, setDate] = useState({start: new Date(), end: new Date()})
   const {store} = props
   const [auth, setAuth] = useState(false);
+  
   //const apiUrl = "http://localhost:3001/api/events";
   useEffect(()=>{
     //fetch('/api/events')
@@ -60,7 +70,48 @@ const EventCalendar = (props) => {
 
   
   return (
-    
+    /*
+     <AuthConsumer>
+    {({ user }) => (
+    <Can
+        role={user.role}
+        perform="calendar:visit"
+        yes={() => (
+          <div>
+      {
+        (open == 0 && auth) &&
+        <div className='c-bigcalendar-container'>
+          <Calendar
+            selectable
+            localizer={localizer}
+            events={events.map(mapToRBCFormat )}
+            scrollToTime={new Date(1970, 1, 1, 6)}
+            defaultDate={new Date()}
+            onSelectEvent={handleEventSelect}
+            onSelectSlot={handleSelect}
+            startAccessor="start"
+            endAccessor="end"
+          />     
+        </div>
+      }
+      {
+        (open == 1 && auth) &&
+        <PageEvent store={store}/>
+      }
+       {
+        (open == 2 && auth) &&
+        <PageEventEdit selectedEventID = {selectedEventID}  store = {store}/>
+      }
+      {
+        (!auth) &&
+          null
+      }
+    </div>
+        )}
+        no={() => <Redirect to="/" />}
+      />
+      
+    )}</AuthConsumer>)}*/
     <div>
       {
         (open == 0 && auth) &&
