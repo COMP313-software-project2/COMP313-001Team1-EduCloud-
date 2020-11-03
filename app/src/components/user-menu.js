@@ -3,15 +3,13 @@ import React,{Component} from 'react'
 
 export default class UserMenu extends Component{
 
+	state = {
+		open: false
+	}
+
 	constructor(props){
 		super(props);
-
-
-
 		this.onClickOutside = this.onClickOutside.bind(this);
-
-
-
 	}
 
 
@@ -38,18 +36,15 @@ export default class UserMenu extends Component{
 
 	}
 
-
-
 	render(){
 
 		const {store} = this.props;
-
+		
 		const user = store.getCurrentUser();
-
-		return <div className="user-menu" ref={(ref) => this.ref = ref}>
-			{user ? <div>
-
-                <h2>My menu</h2>
+		
+		return <div className="user-menu" ref={(ref) => this.ref = ref}>			
+			{user ?
+				<div>
                 <ul className="menu">
                     <li><button onClick={() => {
                         if(this.props.onClose){
@@ -58,10 +53,12 @@ export default class UserMenu extends Component{
 
                         store.signOut();
 
-                    }} type="button">Sign Out</button></li>
+                    }} type="button">Sign out</button></li>
+					
                 </ul>
-
-				</div> : null }
+				</div>
+				:null
+			}	
 
 		</div>
 	}

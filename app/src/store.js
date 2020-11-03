@@ -2,6 +2,7 @@ import {OrderedMap} from 'immutable'
 import _ from 'lodash'
 import Service from './service'
 import Realtime from './realtime'
+import avatar from './images/avatar.png'
 
 export default class Store {
     constructor(appComponent) {
@@ -10,11 +11,11 @@ export default class Store {
         this.service = new Service();
         this.messages = new OrderedMap();
         this.channels = new OrderedMap();
+        this.events = new OrderedMap();
         this.activeChannelId = null;
 
 
         this.token = this.getTokenFromLocalStore();
-
         this.user = this.getUserFromLocalStorage();
         this.users = new OrderedMap();
 
@@ -87,7 +88,7 @@ export default class Store {
 
     loadUserAvatar(user) {
 
-        return `https://api.adorable.io/avatars/100/${user._id}.png`
+        return avatar;//`https://api.adorable.io/avatars/100/${user._id}.png`
     }
 
     startSearchUsers(q = "") {
@@ -268,22 +269,52 @@ export default class Store {
     }
 
     register(user){
-
         return new Promise((resolve, reject) => {
-
             this.service.post('api/users', user).then((response) => {
-
                 console.log("use created", response.data);
-
                 return resolve(response.data);
             }).catch(err => {
-
                 return reject("An error create your account");
             })
-
-
         });
     }
+
+    verifyUser(phone){
+        return new Promise((resolve,reject) => {
+            console.log("inside store class verifyUser function : " + phone)
+            this.service.post('api/verify', {number : phone}).then((result) => {
+                console.log(result.data.request_id)
+                return resolve(result.data);
+            }).catch(err => {
+                return reject("Error happened while verifying user : " + err)
+            })
+        })
+    }
+    checkCode(reqId,code){
+        const data = {reqId: reqId, code: code}
+        return new Promise((resolve,reject) => {
+            this.service.post('api/check',data).then((res) => {
+                console.log("check status : " + res.data.status)
+                return resolve(res.data);
+            }).catch(err => {
+                return reject("Error happened while checking code for user : " + err)
+            })
+        })
+    }
+
+    addEvent(event) {
+        return new Promise((resolve,reject) => {
+            console.log("inside addEvent() evet : " + event.title)
+            this.service.post('api/events',event).then((response) => {
+                console.log("event create : " + response.data);
+                //this.events = this.events.set(response.data._id,response.data)
+                return resolve(response.data);
+            }).catch(err => {
+                return reject("Err ocurred during addevents function : " + err);
+            })
+        })
+    }
+    
     login(email = null, password = null) {
 
         const userEmail = _.toLower(email);
@@ -389,6 +420,7 @@ export default class Store {
         return this.user;
     }
 
+    
 
     fetchChannelMessages(channelId){
 
@@ -433,6 +465,7 @@ export default class Store {
         }
         
     }
+   
     setActiveChannelId(id) {
 
         this.activeChannelId = id;
@@ -609,6 +642,8 @@ export default class Store {
 
         return this.channels.valueSeq();
     }
+    
+    
 
     update() {
 

@@ -1,24 +1,24 @@
 import React, {Component} from 'react'
-import Store from '../store'
-import Messenger from './messenger'
+import Routes from './Routes'
 import Navigation from './navigation'
+import Store from '../store'
 
 export default class App extends Component{
 
-	constructor(props){
-		super(props);
+	constructor(props) {
+        super(props);
 
-		this.state = {
+        this.state = {
+            store: new Store(this),
+        }
+    }
 
-			store: new Store(this),
-		}
-	}
 	render(){
 
-		const {store} = this.state;
+		const { store } = this.state;
 		return <div className="app-wrapper">
-				<Messenger store={store} />
-				<Navigation store={store} />
+				<Navigation store={store}/>
+				<Routes/>
 			</div>
 	}
 }

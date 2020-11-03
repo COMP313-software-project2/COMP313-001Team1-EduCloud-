@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { Navbar, NavItem, Nav } from 'react-bootstrap';
+import { Navbar } from 'react-bootstrap';
+import { NavItem } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
 import Messenger from './messenger'
 import { Route, Switch, BrowserRouter } from 'react-router-dom'
 import EventCalendar from './calendar'
