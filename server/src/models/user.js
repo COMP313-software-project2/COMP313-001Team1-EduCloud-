@@ -67,6 +67,7 @@ export default class User{
     }
 
     login(user) {
+        const role = _.get(user, 'role', '');
         const email = _.get(user, 'email', '');
         const password = _.get(user, 'password', '');
         return new Promise((resolve, reject) => {
@@ -188,8 +189,18 @@ export default class User{
     beforeSave(user, callback  = () =>{}){
         //fisr is validate user object before save to user collection
         let errors = [];
-        const fields = ['name', 'email', 'password','role'];
+        const fields = ['role','name', 'email', 'password'];
         const validations  = {
+            role: {
+                errorMessage: 'Choose your role!',
+                do: () => {
+                    const role = _.get(user, 'role', '');
+                    if (!role=="student" && !role=="mentor") {
+                        return false;
+                    }
+                    return true;
+                }
+            },
             name: {
                 errorMessage: 'Name is required ',
                 do: () => {
@@ -216,17 +227,8 @@ export default class User{
                     }
                     return true;
                 }
-            },
-            role: {
-                errorMessage: 'Choose your role',
-                do: () => {
-                    const role = _.get(user, 'role', '');
-                    if (!role=='student' && !role=='mentor') {
-                        return false;
-                    }
-                    return true;
-                }
             }
+            
          }
 
             // loop all fields to check if valid or not.
@@ -256,6 +258,7 @@ export default class User{
                         const password = _.get(user, 'password');
                         const hashPassword = bcrypt.hashSync(password, saltRound);
                         const userFormatted = {
+                            role: _.get(user, 'role'),
                             name: `${_.trim(_.get(user, 'name'))}`,
                             email: email,
                             password: hashPassword,

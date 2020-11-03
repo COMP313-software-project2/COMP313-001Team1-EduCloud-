@@ -14,7 +14,7 @@ export default class UserForm extends Component {
             message: null,
             isLogin: true,
             user: {
-                role:'',
+                role:'student',
                 name: '',
                 email: '',
                 password: '',
@@ -137,11 +137,8 @@ export default class UserForm extends Component {
     }
 
     onSelectionChange(event) {
-        console.log(event.target.value);
-        this.setState({
-            role: event.target.value
-        });
- 
+        this.setState({value: event.target.value});
+
     }
 
     onCodeFieldChange(event) {
@@ -197,11 +194,11 @@ export default class UserForm extends Component {
 
                     {!isLogin ?  <div>
                         <div className="form-item">
-                        <label>Position:</label>
-                        <select  onChange={this.onSelectionChange} type={'text'} name={"role"} >
-                        <option value="student">Student</option>
-                        <option value="mentor">Mentor</option>
-                            </select>
+                        <label>Role:</label>
+                        <select  value={this.state.value} onChange={this.onTextFieldChange} type={'text'} name={"role"} >
+                            <option value="student">Student</option>
+                            <option value="mentor">Mentor</option>
+                        </select>
                     </div>
                     <div className="form-item">
                         <label>Name</label>
