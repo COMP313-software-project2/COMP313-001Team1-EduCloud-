@@ -6,6 +6,7 @@ import Messenger from './messenger'
 import { Route, Switch, BrowserRouter } from 'react-router-dom'
 import EventCalendar from './calendar'
 import Homepage from './home'
+import Unauthorized from './unauthorized';
 
 
 export default class Navigation extends Component {
@@ -35,6 +36,7 @@ export default class Navigation extends Component {
                         <Route exact path='/' render={(props) => <Homepage store={store} {...props} /> } /> 
                         <Route exact path='/messenger' render={(props) => <Messenger store={store} {...props} /> } /> 
                         <Route exact path='/calendar' render={(props) => <EventCalendar store={store} {...props} /> } /> 
+                        <Route exact path='/unauthorized' render={(props) => <Unauthorized store={store} {...props} /> } /> 
         
                         
                     </Switch>

@@ -114,7 +114,10 @@ const EventCalendar = (props) => {
         }
         else{
           return(
-                <Redirect to="/"/>//user doesn't have the right credentials to enter the page. redirect to home
+            
+            
+                <Redirect to="/unauthorized"/>
+             
             )
         }
  

@@ -411,9 +411,7 @@ export default class Messenger extends Component {
                 <div className="popup">
                
                     <span class="popuptext" id="popupAlert">Sign in to reach this page!</span>
-               
-                
-                  <Redirect to="/"/>
+                    <Redirect to="/unauthorized"/>
                 </div>
               )
           }

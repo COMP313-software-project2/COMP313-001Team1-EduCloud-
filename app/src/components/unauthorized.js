@@ -3,10 +3,6 @@ import { Redirect } from 'react-router-dom'
 import educloud_logo from './educloud_logo.png'
 
 
-
-
-
-
 import React, {Component} from 'react'
 import classNames from 'classnames'
 import {OrderedMap} from 'immutable'
@@ -17,10 +13,10 @@ import moment from 'moment'
 import UserBar from './user-bar'
 
 
-export default class Homepage extends Component {
+export default class Unauthorized extends Component {
 
     constructor(props) {
-        console.log(props.store + "in home constructor")
+        console.log(props.store + "in unauth constructor")
         super(props);
 
         this.state = {
@@ -67,9 +63,8 @@ export default class Homepage extends Component {
     render() {
         
         const {store} = this.props;
-        //var use = store.getCurrentUser();
-        //var userRole=use.role;
-        console.log(store + " in home render()")
+
+        console.log(store + " in unauth render()")
         const {height} = this.state;
 
         const style = {
@@ -91,11 +86,13 @@ export default class Homepage extends Component {
                 <div className="content">
                     <center>
                         <img src={educloud_logo} alt="logo"/>
+                        <div className="app-warning-state"> Sign in to view! </div>
                     </center>
                 </div>                   
             </div>
         </div>
     )
+
        
     }
 }
