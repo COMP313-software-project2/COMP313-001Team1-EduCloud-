@@ -25,6 +25,7 @@ export default class Navigation extends Component {
                         </Navbar.Header>
                         <Navbar.Collapse>
                             <Nav pullRight >
+                                <NavItem href="/">Home</NavItem>
                                 <NavItem href="/calendar">Calendar</NavItem>
                                 <NavItem href="/messenger">Chat</NavItem>
                             </Nav>

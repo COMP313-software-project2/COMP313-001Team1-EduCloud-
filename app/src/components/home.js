@@ -29,6 +29,11 @@ export default class Homepage extends Component {
         }
 
         this._onResize = this._onResize.bind(this);
+
+        const {store} = props
+           
+
+            
  
        
     }
@@ -60,8 +65,10 @@ export default class Homepage extends Component {
     }
 
     render() {
-
+        
         const {store} = this.props;
+        //var use = store.getCurrentUser();
+        //var userRole=use.role;
         console.log(store + " in home render()")
         const {height} = this.state;
 
@@ -69,24 +76,34 @@ export default class Homepage extends Component {
             height: height,
         };
 
+//if(userRole=="student"||userRole=="mentor"){
+    //any role can access the home page
+    return (
+            
 
-        return (
-            <div style={style} className="app-messenger">
-                <div className="header">
-                    
-                    <div className="content"></div>
-                    <div className="right">
-                        <UserBar store={store}/>
-                    </div>
-                </div>
-                <div className="main">                 
-                    <div className="content">
-                        <center>
-                            <img src={educloud_logo} alt="logo"/>
-                        </center>
-                    </div>                   
+        <div style={style} className="app-messenger">
+            <div className="header">
+                
+                <div className="content"></div>
+                <div className="right">
+                    <UserBar store={store}/>
                 </div>
             </div>
-        )
+            <div className="main">                 
+                <div className="content">
+                    <center>
+                        <img src={educloud_logo} alt="logo"/>
+                    </center>
+                </div>                   
+            </div>
+        </div>
+    )
+//}
+//else{
+  //  return(
+    //    <Redirect to="/"/>//user doesn't have the right credentials to enter the page. redirect to home
+    //)
+//}
+       
     }
 }

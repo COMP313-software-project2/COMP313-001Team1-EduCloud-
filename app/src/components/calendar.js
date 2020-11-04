@@ -67,85 +67,57 @@ const EventCalendar = (props) => {
     start: new Date(e.start),
     end: new Date(e.end)
 })
-
+        var user = store.getCurrentUser();
+        if(user!=null){//any signed in user can access calendar
+          var userRole=user.role;
   
-  return (
-    /*
-     <user>
-    {({ user }) => (
-    <Can
-        role={user.role}
-        perform="calendar:visit"
-        yes={() => (
-          <div>
-      {
-        (open == 0 && auth) &&
-        <div className='c-bigcalendar-container'>
-          <Calendar
-            selectable
-            localizer={localizer}
-            events={events.map(mapToRBCFormat )}
-            scrollToTime={new Date(1970, 1, 1, 6)}
-            defaultDate={new Date()}
-            onSelectEvent={handleEventSelect}
-            onSelectSlot={handleSelect}
-            startAccessor="start"
-            endAccessor="end"
-          />     
-        </div>
-      }
-      {
-        (open == 1 && auth) &&
-        <PageEvent store={store}/>
-      }
-       {
-        (open == 2 && auth) &&
-        <PageEventEdit selectedEventID = {selectedEventID}  store = {store}/>
-      }
-      {
-        (!auth) &&
-          null
-      }
-    </div>
-        )}
-        no={() => <Redirect to="/" />}
-      />
-      
-    )}</user>)}*/
-
+        }
+        else{
+          userRole=null;
+        }
+        
+        if(userRole!=null){
+          return (
     
-    <div>
-      {
-        (open == 0 && auth) &&
-        <div className='c-bigcalendar-container'>
-          <Calendar
-            selectable
-            localizer={localizer}
-            events={events.map(mapToRBCFormat )}
-            scrollToTime={new Date(1970, 1, 1, 6)}
-            defaultDate={new Date()}
-            onSelectEvent={handleEventSelect}
-            onSelectSlot={handleSelect}
-            startAccessor="start"
-            endAccessor="end"
-          />     
-        </div>
-      }
-      {
-        (open == 1 && auth) &&
-        <PageEvent store={store}/>
-      }
-       {
-        (open == 2 && auth) &&
-        <PageEventEdit selectedEventID = {selectedEventID}  store = {store}/>
-      }
-      {
-        (!auth) &&
-          null
-      }
-    </div>
-    
-  )
+            <div>
+              {
+                (open == 0 && auth) &&
+                <div className='c-bigcalendar-container'>
+                  <Calendar
+                    selectable
+                    localizer={localizer}
+                    events={events.map(mapToRBCFormat )}
+                    scrollToTime={new Date(1970, 1, 1, 6)}
+                    defaultDate={new Date()}
+                    onSelectEvent={handleEventSelect}
+                    onSelectSlot={handleSelect}
+                    startAccessor="start"
+                    endAccessor="end"
+                  />     
+                </div>
+              }
+              {
+                (open == 1 && auth) &&
+                <PageEvent store={store}/>
+              }
+               {
+                (open == 2 && auth) &&
+                <PageEventEdit selectedEventID = {selectedEventID}  store = {store}/>
+              }
+              {
+                (!auth) &&
+                  null
+              }
+            </div>
+            
+          )
+        }
+        else{
+          return(
+                <Redirect to="/"/>//user doesn't have the right credentials to enter the page. redirect to home
+            )
+        }
+ 
 }
 
 export default EventCalendar
