@@ -71,7 +71,7 @@ const EventCalendar = (props) => {
   
   return (
     /*
-     <AuthConsumer>
+     <user>
     {({ user }) => (
     <Can
         role={user.role}
@@ -111,7 +111,9 @@ const EventCalendar = (props) => {
         no={() => <Redirect to="/" />}
       />
       
-    )}</AuthConsumer>)}*/
+    )}</user>)}*/
+
+    
     <div>
       {
         (open == 0 && auth) &&
