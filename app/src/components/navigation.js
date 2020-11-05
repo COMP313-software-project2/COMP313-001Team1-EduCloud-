@@ -5,6 +5,7 @@ import { Nav } from 'react-bootstrap';
 import Messenger from './messenger'
 import { Route, Switch, BrowserRouter } from 'react-router-dom'
 import EventCalendar from './calendar'
+import Chatbot from './chatbot'
 
 
 export default class Navigation extends Component {
@@ -26,6 +27,7 @@ export default class Navigation extends Component {
                             <Nav pullRight >
                                 <NavItem href="/calendar">Calendar</NavItem>
                                 <NavItem href="/messenger">Chat</NavItem>
+                                <NavItem href="/chatbot" onClick={(event) => {event.preventDefault(); window.open("/chatbot", 'newwindow', 'width=450, height=550'); return false;}}>Help Centre</NavItem>
                             </Nav>
                         </Navbar.Collapse>
                     </Navbar>
@@ -33,7 +35,7 @@ export default class Navigation extends Component {
                         
                         <Route exact path='/messenger' render={(props) => <Messenger store={store} {...props} /> } /> 
                         <Route exact path='/calendar' render={(props) => <EventCalendar store={store} {...props} /> } /> 
-        
+                        <Route exact path='/chatbot' render={(props) => <Chatbot store={store} {...props} /> } /> 
                         
                     </Switch>
                 </BrowserRouter>
