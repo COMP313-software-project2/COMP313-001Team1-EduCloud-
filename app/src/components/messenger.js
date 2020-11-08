@@ -6,6 +6,7 @@ import {ObjectID} from '../helpers/objectid'
 import SearchUser from './search-user'
 import moment from 'moment'
 import UserBar from './user-bar'
+import { Redirect } from 'react-router-dom'
 
 
 export default class Messenger extends Component {
@@ -203,6 +204,16 @@ export default class Messenger extends Component {
         const channels = store.getChannels();
         const members = store.getMembersFromChannel(activeChannel);
 
+        var user = store.getCurrentUser();
+        if(user!=null){//any signed in user can access calendar
+          var userRole=user.role;
+  
+        }
+        else{
+          userRole=null;
+        }
+        
+        if(userRole!=null){
 
         return (
             <div style={style} className="app-messenger">
@@ -394,6 +405,15 @@ export default class Messenger extends Component {
                     </div>
                 </div>
             </div>
-        )
+        )}
+        else{
+            return(
+                <div className="popup">
+               
+                    <span class="popuptext" id="popupAlert">Sign in to reach this page!</span>
+                    <Redirect to="/unauthorized"/>
+                </div>
+              )
+          }
     }
 }

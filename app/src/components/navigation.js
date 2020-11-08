@@ -5,6 +5,8 @@ import { Nav } from 'react-bootstrap';
 import Messenger from './messenger'
 import { Route, Switch, BrowserRouter } from 'react-router-dom'
 import EventCalendar from './calendar'
+import Homepage from './home'
+import Unauthorized from './unauthorized';
 import Chatbot from './chatbot'
 
 
@@ -25,6 +27,7 @@ export default class Navigation extends Component {
                         </Navbar.Header>
                         <Navbar.Collapse>
                             <Nav pullRight >
+                                <NavItem href="/">Home</NavItem>
                                 <NavItem href="/calendar">Calendar</NavItem>
                                 <NavItem href="/messenger">Chat</NavItem>
                                 <NavItem href="/chatbot" onClick={(event) => {event.preventDefault(); window.open("/chatbot", 'newwindow', 'width=450, height=550'); return false;}}>Help Centre</NavItem>
@@ -32,9 +35,11 @@ export default class Navigation extends Component {
                         </Navbar.Collapse>
                     </Navbar>
                     <Switch>
-                        
+                        <Route exact path='/' render={(props) => <Homepage store={store} {...props} /> } /> 
                         <Route exact path='/messenger' render={(props) => <Messenger store={store} {...props} /> } /> 
                         <Route exact path='/calendar' render={(props) => <EventCalendar store={store} {...props} /> } /> 
+                        <Route exact path='/unauthorized' render={(props) => <Unauthorized store={store} {...props} /> } /> 
+        
                         <Route exact path='/chatbot' render={(props) => <Chatbot store={store} {...props} /> } /> 
                         
                     </Switch>
