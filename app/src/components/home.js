@@ -1,12 +1,6 @@
 
 import { Redirect } from 'react-router-dom'
 import educloud_logo from './educloud_logo.png'
-
-
-
-
-
-
 import React, {Component} from 'react'
 import classNames from 'classnames'
 import {OrderedMap} from 'immutable'
@@ -15,7 +9,7 @@ import {ObjectID} from '../helpers/objectid'
 import SearchUser from './search-user'
 import moment from 'moment'
 import UserBar from './user-bar'
-
+import CustomChatbot from "./CustomChatbot";
 
 export default class Homepage extends Component {
 
@@ -92,6 +86,7 @@ export default class Homepage extends Component {
                     <center>
                         <img src={educloud_logo} alt="logo"/>
                     </center>
+                    <CustomChatbot />
                 </div>                   
             </div>
         </div>
