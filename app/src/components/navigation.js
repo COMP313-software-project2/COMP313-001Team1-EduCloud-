@@ -7,7 +7,6 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom'
 import EventCalendar from './calendar'
 import Homepage from './home'
 import Unauthorized from './unauthorized';
-import Chatbot from './chatbot'
 
 
 export default class Navigation extends Component {
@@ -30,7 +29,6 @@ export default class Navigation extends Component {
                                 <NavItem href="/">Home</NavItem>
                                 <NavItem href="/calendar">Calendar</NavItem>
                                 <NavItem href="/messenger">Chat</NavItem>
-                                <NavItem href="/chatbot" onClick={(event) => {event.preventDefault(); window.open("/chatbot", 'newwindow', 'width=450, height=550'); return false;}}>Help Centre</NavItem>
                             </Nav>
                         </Navbar.Collapse>
                     </Navbar>
@@ -39,9 +37,6 @@ export default class Navigation extends Component {
                         <Route exact path='/messenger' render={(props) => <Messenger store={store} {...props} /> } /> 
                         <Route exact path='/calendar' render={(props) => <EventCalendar store={store} {...props} /> } /> 
                         <Route exact path='/unauthorized' render={(props) => <Unauthorized store={store} {...props} /> } /> 
-        
-                        <Route exact path='/chatbot' render={(props) => <Chatbot store={store} {...props} /> } /> 
-                        
                     </Switch>
                 </BrowserRouter>
 
