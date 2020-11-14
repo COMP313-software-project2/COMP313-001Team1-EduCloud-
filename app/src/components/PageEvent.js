@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import Calendar from './calendar';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
