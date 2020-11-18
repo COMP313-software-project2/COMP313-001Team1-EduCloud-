@@ -25,6 +25,7 @@ export default class UserBar extends Component {
         const me = store.getCurrentUser();
         const profilePicture = _.get(me, 'avatar');
         const isConnected = store.isConnected();
+        const role=_.get(me,'role');
 
         return (
             <div className="user-bar">
@@ -36,6 +37,16 @@ export default class UserBar extends Component {
                     })
 
                 }} type="button" className="login-btn">Sign In</button> : null}
+                
+            {
+            _.get(me,'role')!=""?
+             (role==="student"  ?
+            <div><img src="/images/S.png" style={{height:"20px", width:"20px"}}/></div> : <div></div>):<div></div>}
+               { 
+                _.get(me,'role')!=""?
+             (role==="mentor"  ?
+            <div><img src="/images/m1.jpg" style={{height:"20px", width:"20px"}}/></div> : <div></div>):<div></div>}
+            
                 <div className="profile-name">{_.get(me, 'name')}</div>
                 <div className="profile-image" onClick={() => {
 
