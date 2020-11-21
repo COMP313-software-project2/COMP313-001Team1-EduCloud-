@@ -204,10 +204,6 @@ export default class UserForm extends Component {
                         <label>Name</label>
                         <input placeholder={'Full name'} onChange={this.onTextFieldChange} type={'text'} value={_.get(user, 'name', '')} name={"name"} />
                     </div>
-                    <div className="form-item">
-                        <label>Phone</label>
-                        <input placeholder={'Phone number'} onChange={this.onPhoneFieldChange} type={'text'} value={phone} name={"phone"} />
-                    </div>
                     </div> : null }
 
                     <div className="form-item">
