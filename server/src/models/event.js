@@ -43,18 +43,31 @@ export default class Event {
             }); 
         })
     }
+    delete(eventId){
+        let eventIdOb = new ObjectID(eventId);
+        return new Promise((resolve, reject) => {
+        this.app.db.collection('events').remove({_id : eventIdOb}, (err, res) => {
+            if(err){
+                console.log("error while deleting");
+                return reject(err);
+            }
+            return resolve(res);
+        })
+    })
+}
 
     update(event,eventId) {
-        console.log("inside event update, event : " + eventId);
-        console.log("inside update, event :  " + event.title)
+        let userId2 = new ObjectID(event.userId);
+        const eventIdOb = new ObjectID(eventId);    
         return new Promise((resolve, reject) => {
-        this.app.db.collection('events').findOneAndUpdate({_id:eventId}, 
-            {$set:{
+        this.app.db.collection('events').findOneAndUpdate({_id:eventIdOb}, 
+            {
                 title: event.title,
                 start: event.start,
                 end: event.end,
-                info: event.info
-            }}
+                info: event.info,
+                userId: userId2
+            }
         , (err, res) => {
             if(err) {
                 console.log("error occured during updating event");
@@ -92,6 +105,7 @@ export default class Event {
             })
         })
     }
+   
 
     create(obj) {
         return new Promise((resolve,reject) => {

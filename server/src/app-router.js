@@ -95,13 +95,21 @@ export default class AppRouter{
 
         app.post('/api/event/:id', (req,res) => {
             const body = req.body;
-            console.log("inside app-router EDIT : " +body)
             const eventId = _.get(req,'params.id');
             app.models.event.update(body,eventId).then((event) => {
                 return res.status(200).json(event);
             }).catch(err => {
                 return res.status(400).json(err);
             });       
+        })
+        app.post('/api/event/delete/:id',(req,res) => {
+            const eventId = _.get(req,'params.id');
+            console.log("inside app-router DELETE : " + eventId)
+            app.models.event.delete(eventId).then(() => {
+                return res.status(200).json();
+            }).catch(err => {
+                return res.status(400).json(err);
+            })
         })
     
 

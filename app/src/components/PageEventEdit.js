@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Service from '../service'
 import  Calendar from './calendar';
+import Grid from "@material-ui/core/Grid";
 
 
 
@@ -18,16 +19,6 @@ const PageEventEdit = (props) => {
 
 
   useEffect(()=>{
-    /* fetch(`/api/events/${match.params.id}`)
-      .then(res => res.json())
-      .then(data => setEventData({
-        _id: data._id || '',
-        title: data.title || '',
-        start: data.start || '',
-        end: data.end || '',
-        info: data.info || ''
-      }))
-      .catch(err => console.log(err)) */
       const fetch = async () => {
         console.log("inside pageEventEdit")
         const service = new Service();
@@ -37,7 +28,8 @@ const PageEventEdit = (props) => {
               title: res.data.title ,
               start: res.data.start ,
               end: res.data.end ,
-              info: res.data.info
+              info: res.data.info,
+              userId: res.data.userId
             })).catch(err => console.log(err))
       }
       fetch();
@@ -48,9 +40,7 @@ const PageEventEdit = (props) => {
     setEventData({...eventData, [e.target.name]: e.target.value});
   }
 
-  const onDelete = () => {
-
-  }
+  
   const onUpdate = () => {
     const service = new Service();
     service.post(`api/event/${selectedEventID}`,eventData)
@@ -60,6 +50,16 @@ const PageEventEdit = (props) => {
           })
           .catch(
             err => {console.log(err);setBack(false)}
+          )
+    
+  }
+  const onDelete = () => {
+    const service = new Service();
+    service.post(`api/event/delete/${selectedEventID}`)
+          .then(() => {
+            setBack(true);
+          }).catch(
+            err=>{console.log(err);setBack(false)}
           )
   }
   const onCancel = () => {
@@ -97,15 +97,26 @@ const PageEventEdit = (props) => {
           <textarea className="form-control" cols={40} name="info" rows={5} value={eventData.info} onChange={onChange}/>
         </div>
         <div className="form-group">
-          <div>
-            <button className="btn btn-secondary" disabled>Cancel</button>{' '}
-            <button className="btn btn-danger">Delete</button>{' '}
+          <div>           
             <button className="btn btn-primary">
               Edit
             </button>
           </div>
         </div>
       </form>
+      <Grid container spacing={10}>
+    
+    <Grid className="d-flex" item form="maincomponent" xs>
+      <form className="smlFormSpace" onSubmit={onDelete}>
+       <button className="btn btn-danger">Delete</button>
+      </form>
+      
+      <form onSubmit={onCancel}>
+      <button className="btn btn-secondary">Cancel</button>
+      </form>
+      </Grid>
+     
+      </Grid>
     </div>
     : <Calendar store = {store}/>
       }
