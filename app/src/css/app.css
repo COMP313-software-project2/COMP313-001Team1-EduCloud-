@@ -575,5 +575,11 @@ h2.title {
   padding: 0 10px;
   color: #e74c3c;
 }
+.d-flex{
+  display: flex
+}
+.smlFormSpace{
+  margin-right: 10px;
+}
 
 /*# sourceMappingURL=app.css.map */

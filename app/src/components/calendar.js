@@ -27,9 +27,6 @@ const EventCalendar = (props) => {
   
   //const apiUrl = "http://localhost:3001/api/events";
   useEffect(()=>{
-    //fetch('/api/events')
-      //.then(res => res.json())
-      //.then(data => setEvents(data))
     const fetch = async () => {
       var user = store.getCurrentUser();
       if(user){

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Calendar from './calendar';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment';
 
 const PageEvent = (props) => {
   const [ eventData, setEventData ] = useState({
@@ -33,15 +34,6 @@ const PageEvent = (props) => {
           setBack(false);
           console.log("err during creating event in react file : " + err)
         })
-        /* axios.post(apiUrl,data)
-            .then((res)=> {
-                
-                setBack(true);
-                console.log('successfully added. back state :'  + back);
-            }).catch((err) => {
-              console.log("err during creating event! : " + err);
-              setBack(false);
-            }); */
       
   };
   const onChange = (e)=> {
@@ -69,6 +61,7 @@ const PageEvent = (props) => {
           <br/>
           <DatePicker
             className="form-control"
+            dateFormat="DD-MM-YYYY, h:mm:ss a"
             selected={eventData.start}
             onChange={date => setEventData({...eventData,start: date})}
             showTimeSelect
