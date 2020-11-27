@@ -11,15 +11,12 @@ import Can from "../components/Can";
 const localizer = momentLocalizer(moment)
 
 
-
-
-
 const EventCalendar = (props) => {
 
 
 
   const [ events, setEvents ] = useState([])
-  const [ selectedEventID, setSelectedEventID ] = useState('')
+  const [ selectedEventID, setSelectedEventID ] = useState(0)
   const [open, setOpen] = useState(0)
   const [date, setDate] = useState({start: new Date(), end: new Date()})
   const {store} = props
@@ -55,7 +52,7 @@ const EventCalendar = (props) => {
     setOpen(2);
   }
 
-  const handleSelect = ({start,end}) => { 
+  const handleSelect = ({start,end}) => {
     setDate({start: start, end: end});
     console.log('In handleSelect start : ' + date.start + ' end : ' + date.end);
     setOpen(1);
@@ -79,7 +76,7 @@ const EventCalendar = (props) => {
             <div>
               {
                 (open == 0 && auth) &&
-                <div className='c-bigcalendar-container'>
+                <div onClick={handleSelect} className='c-bigcalendar-container'>
                   <Calendar
                     selectable
                     localizer={localizer}
