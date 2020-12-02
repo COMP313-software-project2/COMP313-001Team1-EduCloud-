@@ -64,19 +64,36 @@ var Event = function () {
             });
         }
     }, {
-        key: 'update',
-        value: function update(event, eventId) {
+        key: 'delete',
+        value: function _delete(eventId) {
             var _this2 = this;
 
-            console.log("inside event update, event : " + eventId);
-            console.log("inside update, event :  " + event.title);
+            var eventIdOb = new _mongodb.ObjectID(eventId);
             return new Promise(function (resolve, reject) {
-                _this2.app.db.collection('events').findOneAndUpdate({ _id: eventId }, { $set: {
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        info: event.info
-                    } }, function (err, res) {
+                _this2.app.db.collection('events').remove({ _id: eventIdOb }, function (err, res) {
+                    if (err) {
+                        console.log("error while deleting");
+                        return reject(err);
+                    }
+                    return resolve(res);
+                });
+            });
+        }
+    }, {
+        key: 'update',
+        value: function update(event, eventId) {
+            var _this3 = this;
+
+            var userId2 = new _mongodb.ObjectID(event.userId);
+            var eventIdOb = new _mongodb.ObjectID(eventId);
+            return new Promise(function (resolve, reject) {
+                _this3.app.db.collection('events').findOneAndUpdate({ _id: eventIdOb }, {
+                    title: event.title,
+                    start: event.start,
+                    end: event.end,
+                    info: event.info,
+                    userId: userId2
+                }, function (err, res) {
                     if (err) {
                         console.log("error occured during updating event");
                         return reject(err);
@@ -104,14 +121,14 @@ var Event = function () {
     }, {
         key: 'load',
         value: function load(id) {
-            var _this3 = this;
+            var _this4 = this;
 
             //id = `${id}`;
             id = _lodash2.default.toString(id);
             return new Promise(function (resolve, reject) {
-                _this3.findEventById(id, function (err, event) {
+                _this4.findEventById(id, function (err, event) {
                     if (!err && event) {
-                        _this3.events = _this3.events.set(id, event);
+                        _this4.events = _this4.events.set(id, event);
                     }
                     return err ? reject(err) : resolve(event);
                 });
@@ -120,7 +137,7 @@ var Event = function () {
     }, {
         key: 'create',
         value: function create(obj) {
-            var _this4 = this;
+            var _this5 = this;
 
             return new Promise(function (resolve, reject) {
                 console.log("from event models, obj _id value : " + obj._id + " title value : " + obj.title);
@@ -134,7 +151,7 @@ var Event = function () {
                     info: obj.info,
                     userId: userId
                 };
-                _this4.app.db.collection('events').insertOne(event, function (err) {
+                _this5.app.db.collection('events').insertOne(event, function (err) {
                     if (err) {
                         console.log("err in db.collection : " + err);
                         return reject(err);

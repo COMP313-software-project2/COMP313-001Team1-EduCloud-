@@ -113,10 +113,18 @@ var AppRouter = function () {
 
             app.post('/api/event/:id', function (req, res) {
                 var body = req.body;
-                console.log("inside app-router EDIT : " + body);
                 var eventId = _lodash2.default.get(req, 'params.id');
                 app.models.event.update(body, eventId).then(function (event) {
                     return res.status(200).json(event);
+                }).catch(function (err) {
+                    return res.status(400).json(err);
+                });
+            });
+            app.post('/api/event/delete/:id', function (req, res) {
+                var eventId = _lodash2.default.get(req, 'params.id');
+                console.log("inside app-router DELETE : " + eventId);
+                app.models.event.delete(eventId).then(function () {
+                    return res.status(200).json();
                 }).catch(function (err) {
                     return res.status(400).json(err);
                 });
