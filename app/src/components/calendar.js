@@ -88,6 +88,7 @@ const EventCalendar = (props) => {
                     defaultDate={new Date()}
                     onSelectEvent={handleEventSelect}
                     onSelectSlot={handleSelect}
+                    longPressThreshold={1}
                     startAccessor="start"
                     endAccessor="end"
                   />     
