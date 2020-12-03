@@ -3,6 +3,7 @@ import Calendar from './calendar';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
+import PageEventInfo from './PageEventInfo';
 
 const PageEvent = (props) => {
   const [ eventData, setEventData ] = useState({

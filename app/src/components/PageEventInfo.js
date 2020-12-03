@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import Service from '../service'
-import  Calendar from './calendar';
-import Grid from "@material-ui/core/Grid";
-import PageEventEdit from './PageEventEdit'
+import Calendar from './calendar'
+import Grid from "@material-ui/core/Grid"
 import PageEvent from './PageEvent'
 import moment from 'moment'
-import Can from "../components/Can";
+import Can from "../components/Can"
 import { Redirect } from 'react-router-dom'
+import PageEventEdit from './PageEventEdit'
+import history from './history';
+
 
 
 
@@ -46,11 +48,6 @@ const PageEventInfo = (props) => {
       
     }
 
-    const onEdit = (event,e) => {
-        
-        setOpen(2);
-    }
-    
     const onUpdate = () => {
         const service = new Service();
         service.post(`api/event/${selectedEventID}`,eventData)
@@ -67,7 +64,8 @@ const PageEventInfo = (props) => {
         setBack(true);
       }
             
-     
+      
+       
       return (
         <div>
           {!back
@@ -78,42 +76,39 @@ const PageEventInfo = (props) => {
               <label className="control-label " htmlFor="title">
                 Title
               </label>
-              <input className="form-control" name="title" type="text" value={eventData.title} onChange={onChange} disabled={true}/>
+              <input className="form-control" name="title" type="text" value={eventData.title} onChange={onChange} />
             </div>
             <div className="form-group ">
               <label className="control-label " htmlFor="start">
                 Start Date
               </label>
-              <input className="form-control" name="start" type="text" value={eventData.start} onChange={onChange} disabled={true}/>
+              <input className="form-control" name="start" type="text" value={eventData.start} onChange={onChange} />
             </div>
             <div className="form-group ">
               <label className="control-label " htmlFor="end">
                 End Date
               </label>
-              <input className="form-control" name="end" type="text" value={eventData.end} onChange={onChange} disabled={true}/>
+              <input className="form-control" name="end" type="text" value={eventData.end} onChange={onChange} />
               <small className="hint">* End date is exclusive in the date range.</small>
             </div>
             <div className="form-group ">
               <label className="control-label " htmlFor="info">
                 Details
               </label>
-              <textarea className="form-control" cols={40} name="info" rows={5} value={eventData.info} onChange={onChange} disabled={true}/>
+              <textarea className="form-control" cols={40} name="info" rows={5} value={eventData.info} onChange={onChange} />
             </div>
-            
+            <div className="form-group">
+              <div>           
+                <button className="btn btn-primary" onClick={()=> history.push('/calendar')} >
+                  Save
+                </button>
+              </div>
+            </div>
           </form>
           <Grid container spacing={10}>
         
         <Grid className="d-flex" item form="maincomponent" xs>
-        <form onSubmit={onEdit}>
-            
-          <div className="form-group">
-              <div>           
-                <button className="btn btn-primary">
-                  Edit
-                </button>
-              </div>
-            </div>
-        </form>
+       
         <form onSubmit={onCancel}>
           <button className="btn btn-secondary">Cancel</button>
         </form>
@@ -125,6 +120,7 @@ const PageEventInfo = (props) => {
         : <Calendar store = {store}/>
           }
         </div>
+        
       )
     
     }

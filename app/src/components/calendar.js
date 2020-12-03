@@ -53,7 +53,7 @@ const EventCalendar = (props) => {
   const handleEventSelect = (event, e) => {
     //props.history.push(`/event/${event._id}`)
     setSelectedEventID(event._id)
-    setOpen(3);
+    setOpen(2);
   }
 
   const handleSelect = ({start,end}) => { 

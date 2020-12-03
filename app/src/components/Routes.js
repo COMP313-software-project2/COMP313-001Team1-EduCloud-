@@ -11,6 +11,7 @@ const Routes = () => (
     <Route path='/event' ><PageEvent/></Route>
     <Route render ={() => <PageEventEdit/>} path="/event/:id"/>
    
+   
     </Router>
     
   )
