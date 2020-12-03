@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Service from '../service'
 import  Calendar from './calendar';
 import Grid from "@material-ui/core/Grid";
+import { Box, ListItem, TextField } from '@material-ui/core';
 
 
 
@@ -70,6 +71,7 @@ const PageEventEdit = (props) => {
       {!back
     ?<div className='c-page-container'>
       <form onSubmit={onUpdate}>
+
         <legend>Event Details</legend>
         <div className="form-group ">
           <label className="control-label " htmlFor="title">

@@ -5,6 +5,7 @@ import moment from 'moment'
 import Service from '../service'
 import PageEvent from './PageEvent'
 import PageEventEdit from './PageEventEdit'
+import PageEventInfo from './PageEventInfo'
 import Can from "../components/Can";
 
 
@@ -52,7 +53,7 @@ const EventCalendar = (props) => {
   const handleEventSelect = (event, e) => {
     //props.history.push(`/event/${event._id}`)
     setSelectedEventID(event._id)
-    setOpen(2);
+    setOpen(3);
   }
 
   const handleSelect = ({start,end}) => { 
@@ -60,6 +61,9 @@ const EventCalendar = (props) => {
     console.log('In handleSelect start : ' + date.start + ' end : ' + date.end);
     setOpen(1);
   }
+
+
+
   const mapToRBCFormat = e => Object.assign({}, e, {
     start: new Date(e.start),
     end: new Date(e.end)
@@ -100,6 +104,10 @@ const EventCalendar = (props) => {
                {
                 (open == 2 && auth) &&
                 <PageEventEdit selectedEventID = {selectedEventID}  store = {store}/>
+              }
+              {
+                (open == 3 && auth) &&
+                <PageEventInfo selectedEventID = {selectedEventID}  store = {store}/>
               }
               {
                 (!auth) &&

@@ -42,6 +42,7 @@ const PageEvent = (props) => {
   };
 
 
+
   return (
       <div>
     {!back
@@ -64,11 +65,13 @@ const PageEvent = (props) => {
             dateFormat="DD-MM-YYYY, h:mm:ss a"
             selected={eventData.start}
             onChange={date => setEventData({...eventData,start: date})}
+            isClearable
             showTimeSelect
             timeFormat="HH:mm"
             timeIntervals={15}
             timeCaption="time"
             dateFormat="MMMM d, yyyy h:mm aa"
+            placeholderText="Click to select a date"
           />
         </div>
         <div className="form-group ">
@@ -80,11 +83,13 @@ const PageEvent = (props) => {
             className="form-control"
             selected={eventData.end}
             onChange={date => setEventData({...eventData,end: date})}
+            isClearable
             showTimeSelect
             timeFormat="HH:mm"
             timeIntervals={15}
             timeCaption="time"
             dateFormat="MMMM d, yyyy h:mm aa"
+            placeholderText="Click to select a date"
           />
         </div>
         <div className="form-group ">
