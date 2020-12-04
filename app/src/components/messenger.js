@@ -20,6 +20,8 @@ export default class Messenger extends Component {
             newMessage: 'Hello there...',
             searchUser: "",
             showSearchUser: false,
+            file: null,
+            chunks: []
         }
 
         this._onResize = this._onResize.bind(this);
@@ -29,6 +31,8 @@ export default class Messenger extends Component {
         this._onCreateChannel = this._onCreateChannel.bind(this);
         this.renderChannelTitle = this.renderChannelTitle.bind(this)
         this.renderChannelAvatars = this.renderChannelAvatars.bind(this);
+        this.sendFile = this.sendFile.bind(this);
+        this.sendMsg = this.sendMsg.bind(this);
     }
 
     renderChannelAvatars(channel){
@@ -100,8 +104,6 @@ export default class Messenger extends Component {
 
 
         store.onCreateNewChannel(channel);
-
-
     }
 
     scrollMessagesToBottom() {
@@ -113,51 +115,96 @@ export default class Messenger extends Component {
     }
 
     renderMessage(message) {
+        const ftyp = _.get(message,'type',"string");
+        let html = null;
+        const content = _.get(message, 'body', '');
+        if(ftyp == "string"){
+            
 
-        const text = _.get(message, 'body', '');
-
-        const html = _.split(text, '\n').map((m, key) => {
-
-            return <p key={key} dangerouslySetInnerHTML={{__html: m}}/>
-        })
-
-
+            html = _.split(content, '\n').map((m, key) => {
+    
+                return <p key={key} dangerouslySetInnerHTML={{__html: m}}/>
+            })
+        } else {
+           html = _.split(content,'\n').map((m,key) => {
+                return ftyp == "image" ? 
+                (<p key={key}>
+                 <a target="_blank" className="img-container" href={m}><img src={m}/></a>
+              </p>) :
+              (<p key={key}>
+                <a target="_blank" href={m}>download {m} file.</a>
+              </p>);
+            })
+            
+           
+        }
         return html;
     }
+    sendFile(msgId,file, offset, chunksize) {
+        const {store} = this.props;
+        if(file !== null){
+            let reader = new FileReader();
+            let con = "";
+            let res = null;
+            reader.onload = (e) => {
+              let {result} = e.target;
+              result = result.split(",")[1];
+              let chunks = result.match(/.{1,19000}/g);
+              _.forEach(chunks, (chunk) => {
+                con += chunk;
+              })
+              res = store.processFile(con,file.type)
+              let ft = file.type.indexOf("image") !== -1 ? "image" : "file";
+                this.sendMsg(msgId,res,ft,file.type);
+            }
+            
+            reader.readAsDataURL(file);
+        }
+      
+      }
+     
 
     handleSend() {
 
         const {newMessage} = this.state;
-        const {store} = this.props;
-
+        
+        const messageId = new ObjectID().toString();
+        const {file} = this.state;
 
         // create new message
-
-        if (_.trim(newMessage).length) {
-
-            const messageId = new ObjectID().toString();
-            const channel = store.getActiveChannel();
-            const channelId = _.get(channel, '_id', null);
-            const currentUser = store.getCurrentUser();
-
-            const message = {
-                _id: messageId,
-                channelId: channelId,
-                body: newMessage,
-                userId: _.get(currentUser, '_id'),
-                me: true,
-
-            };
-
-
-            store.addMessage(messageId, message);
-
-            this.setState({
-                newMessage: '',
-            })
+        if(file == null){
+            if (_.trim(newMessage).length) {
+                this.sendMsg(messageId,newMessage,"string","");
+            }
+        }else{
+            
+            this.sendFile(messageId,file,0,1000);
         }
-
-
+        this.setState({
+            newMessage: '',
+            file : null
+        })
+        
+    }
+    
+    
+    sendMsg(msgId,content,msgtype,ftyp){
+        const {store} = this.props;
+        const messageId = msgId;
+        const channel = store.getActiveChannel();
+        const channelId = _.get(channel, '_id', null);
+        const currentUser = store.getCurrentUser();
+        const message = {
+            _id: messageId,
+            channelId: channelId,
+            body: content,
+            userId: _.get(currentUser, '_id'),
+            me: true,
+            type: msgtype,
+            filetype: ftyp
+        };
+        store.addMessage(messageId, message);
+       
     }
 
     _onResize() {
@@ -189,7 +236,7 @@ export default class Messenger extends Component {
     }
 
     render() {
-
+        const {file} = this.state;
         const {store} = this.props;
         console.log(store + " in messenger render()")
         const {height} = this.state;
@@ -368,6 +415,15 @@ export default class Messenger extends Component {
                             <div className="actions">
                                 <button onClick={this.handleSend} className="send">Send</button>
                             </div>
+                            <input 
+                            type="file"
+                            id="file-to-upload"
+                            style={{display: "none"}}
+                            onChange={(e) => this.setState({file: e.target.files[0]})}/>
+                            <label 
+                            role="button"
+                            htmlFor="file-to-upload"
+                            className="btn btn-warning upload-file">{file !== null ? file.name : "Upload File"}</label>
                         </div> : null}
 
 

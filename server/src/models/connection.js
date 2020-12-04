@@ -201,9 +201,17 @@ export default class Connection {
 
                 const userId = userConnection.userId;
                 channel.userId = userId;
-
+                console.log("INSIDE CREATE CHANNEL : " + channel._id);
+                let chid = new ObjectID(channel._id);
+                this.app.models.channel.findById(chid).then((exChannel) => {
+                    
+                        
+                    
+                }).catch((err) => {
+                    if(err == "Not found"){
+                    console.log("NO CHANNEL FOUND");
                 this.app.models.channel.create(channel).then((channelObject) => {
-
+                    console.log("CREATING CHANNEL : " + channelObject);
                     // successful created channel ,
 
                     //console.log("Succesful created new channel", typeof userId, chanelObject);
@@ -241,7 +249,7 @@ export default class Connection {
                                     const ws = con.ws;
                                     const obj = {
                                         action: 'channel_added',
-                                        payload: chanelObject,
+                                        payload: channelObject,
                                     }
 
                                     //send to socket client matching userId in channel members
@@ -258,7 +266,8 @@ export default class Connection {
 
                     //const memberConnections = this.connections.filter((con) => `${con.userId}` = )
 
-                });
+                })}});
+                
                 console.log("Got new channel need to be created from client", channel);
 
             break;

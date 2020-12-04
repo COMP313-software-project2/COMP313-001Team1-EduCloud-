@@ -3,6 +3,7 @@ import _ from 'lodash'
 import Service from './service'
 import Realtime from './realtime'
 import avatar from './images/avatar.png'
+import {decode} from 'base64-arraybuffer';
 
 export default class Store {
     constructor(appComponent) {
@@ -279,28 +280,13 @@ export default class Store {
         });
     }
 
-    verifyUser(phone){
-        return new Promise((resolve,reject) => {
-            console.log("inside store class verifyUser function : " + phone)
-            this.service.post('api/verify', {number : phone}).then((result) => {
-                console.log(result.data.request_id)
-                return resolve(result.data);
-            }).catch(err => {
-                return reject("Error happened while verifying user : " + err)
-            })
-        })
-    }
-    checkCode(reqId,code){
-        const data = {reqId: reqId, code: code}
-        return new Promise((resolve,reject) => {
-            this.service.post('api/check',data).then((res) => {
-                console.log("check status : " + res.data.status)
-                return resolve(res.data);
-            }).catch(err => {
-                return reject("Error happened while checking code for user : " + err)
-            })
-        })
-    }
+   
+      processFile(chunk_container,filetype){
+        let blob = new Blob([decode(chunk_container)], {type: filetype});
+        let imageUrl = URL.createObjectURL(blob);
+        return imageUrl;
+      }
+   
 
     addEvent(event) {
         return new Promise((resolve,reject) => {
@@ -485,7 +471,7 @@ export default class Store {
     }
 
     setMessage(message, notify = false) {
-
+        console.log("INSIDE SETMESSAGE")
         const id = _.toString(_.get(message, '_id'));
         this.messages = this.messages.set(id, message);
         const channelId = _.toString(message.channelId);
@@ -522,7 +508,6 @@ export default class Store {
 
         // we need add user object who is author of this message
 
-
         const user = this.getCurrentUser();
         message.user = user;
 
@@ -534,17 +519,19 @@ export default class Store {
         if (channelId) {
 
             let channel = this.channels.get(channelId);
-
-
             channel.lastMessage = _.get(message, 'body', '');
-
+        
+           
+        
             // now send this channel info to the server
             const obj = {
 
-                action: 'create_channel',
-                payload: channel,
-            };
-            this.realtime.send(obj);
+               action: 'create_channel',
+               payload: channel,
+           };
+           this.realtime.send(obj);
+        
+           
 
 
             //console.log("channel:", channel);
@@ -562,8 +549,7 @@ export default class Store {
 
 
             channel.isNew = false;
-            this.channels = this.channels.set(channelId, channel);
-
+            this.channels.set(channelId, channel);
 
         }
         this.update();
@@ -626,7 +612,7 @@ export default class Store {
     }
 
     addChannel(index, channel = {}) {
-        this.channels = this.channels.set(`${index}`, channel);
+        this.channels = this.channels.set(index, channel);
 
         this.update();
     }

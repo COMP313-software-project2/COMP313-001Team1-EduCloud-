@@ -81,7 +81,7 @@ var Channel = function () {
 
             return new Promise(function (resolve, reject) {
                 _this4.app.db.collection('channels').findOne({ _id: new _mongodb.ObjectID(id) }, function (err, result) {
-                    if (err || !result) {
+                    if (err) {
                         return reject(err ? err : "Not found");
                     }
                     return resolve(result);
@@ -114,6 +114,9 @@ var Channel = function () {
                     userId: userIdObject,
                     members: members
                 };
+              
+                
+              
                 _this5.app.db.collection('channels').insertOne(channel, function (err, info) {
                     if (!err) {
                         var channelId = channel._id.toString();
@@ -121,6 +124,8 @@ var Channel = function () {
                     }
                     return err ? reject(err) : resolve(channel);
                 });
+               
+               
             });
         }
     }]);
