@@ -581,5 +581,12 @@ h2.title {
 .smlFormSpace{
   margin-right: 10px;
 }
+.img-container > img {
+  max-width: 150px;
+}
+
+.upload-file {
+  margin: 5px;
+}
 
 /*# sourceMappingURL=app.css.map */
