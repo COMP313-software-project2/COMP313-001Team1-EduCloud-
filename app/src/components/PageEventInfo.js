@@ -61,17 +61,25 @@ const PageEventInfo = (props) => {
       }
 
       const onCancel = () => {
-        setBack(true);
+        setOpen(2);
       }
             
-      
+      const onDelete = () => {
+        const service = new Service();
+        service.post(`api/event/delete/${selectedEventID}`)
+              .then(() => {
+                setBack(true);
+              }).catch(
+                err=>{console.log(err);setBack(false)}
+              )
+      }
        
       return (
         <div>
           {!back
         ?<div className='c-page-container'>
           <form onSubmit={onUpdate}>
-            <legend>Event Details</legend>
+            <legend>Edit your Event</legend>
             <div className="form-group ">
               <label className="control-label " htmlFor="title">
                 Title
@@ -99,7 +107,7 @@ const PageEventInfo = (props) => {
             </div>
             <div className="form-group">
               <div>           
-                <button className="btn btn-primary" onClick={()=> history.push('/calendar')} >
+                <button className="btn btn-primary" >
                   Save
                 </button>
               </div>
@@ -109,10 +117,13 @@ const PageEventInfo = (props) => {
         
         <Grid className="d-flex" item form="maincomponent" xs>
        
+        <form onSubmit={onDelete}>
+          <button className="btn btn-secondary">Delete</button>
+        </form>
+        
         <form onSubmit={onCancel}>
           <button className="btn btn-secondary">Cancel</button>
         </form>
-          
           </Grid>
          
           </Grid>

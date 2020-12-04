@@ -63,7 +63,6 @@ const EventCalendar = (props) => {
   }
 
 
-
   const mapToRBCFormat = e => Object.assign({}, e, {
     start: new Date(e.start),
     end: new Date(e.end)
@@ -104,10 +103,6 @@ const EventCalendar = (props) => {
                {
                 (open == 2 && auth) &&
                 <PageEventEdit selectedEventID = {selectedEventID}  store = {store}/>
-              }
-              {
-                (open == 3 && auth) &&
-                <PageEventInfo selectedEventID = {selectedEventID}  store = {store}/>
               }
               {
                 (!auth) &&
