@@ -35,6 +35,8 @@ export default class Message {
                         userId: true,
                         body: true,
                         created: true,
+                        type: true,
+                        filetype: true
                     }
                 },
                 {
@@ -45,6 +47,8 @@ export default class Message {
                         userId: true,
                         body: true,
                         created: true,
+                        type: true,
+                        filetype: true
                     }
                 },
                 {
@@ -77,6 +81,8 @@ export default class Message {
                 userId: userId,
                 channelId: channelId,
                 created: new Date(),
+                type: _.get(obj,'type','string'),
+                filetype:_.get(obj,'filetype','')
             };
                 this.app.db.collection('messages').insertOne(message, (err, info) =>{
                     if(err){

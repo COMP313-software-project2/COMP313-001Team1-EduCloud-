@@ -29,26 +29,7 @@ export default class AppRouter{
                 return res.status(503).json({error: err});
             })
         });
-        app.post('/api/verify', (req, res, next) => {
-            console.log("INSIDE api/user/verify app-router")
-            const number = req.body.number;
-            console.log("number passed : " + number);
-            app.models.user.verify(number).then((result) =>{
-                console.log("verify reqId result : " + result.request_id)
-                return res.status(200).json(result);
-            }).catch(err => {
-                return res.status(503).json({error: err});
-            })
-        });
-        app.post('/api/check', (req, res, next) => {
-            const code = req.body.code;
-            const reqId = req.body.reqId;
-            app.models.user.check(reqId,code).then((result) =>{
-                return res.status(200).json(result);
-            }).catch(err => {
-                return res.status(503).json({error: err});
-            })
-        });
+        
 
         app.post('/api/events',(req,res) => {
             

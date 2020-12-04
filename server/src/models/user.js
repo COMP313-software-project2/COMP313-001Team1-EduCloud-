@@ -3,8 +3,7 @@ import {isEmail} from '../helper'
 import bcrypt from 'bcrypt'
 import {ObjectID} from 'mongodb'
 import {OrderedMap} from 'immutable'
-//const Nexmo = require('nexmo');
-import Nexmo from 'nexmo'
+
 
 
 const saltRound = 10;
@@ -106,50 +105,6 @@ export default class User{
             }
             return callback(null, result);
         });
-    }
-
-    check(reqId, code) {
-       console.log("reqId and code in check method in user class : " + reqId + " " + code);
-        return new Promise(function(resolve, reject) {
-            const nexmo = new Nexmo({
-                apiKey: '5ff68c1c',
-                apiSecret: '98M58gl906LXrf68'
-              });
-            nexmo.verify.check({
-              request_id: reqId,
-              code: code
-            }, (err, result) => {
-              if (err) {
-                console.error(err)
-                reject(err)
-              } else {
-                  console.log("successfully compared!")
-                resolve(result)
-              }
-            })
-          })
-    }
-
-    verify(number) {
-        
-        return new Promise(function(resolve, reject) {
-            const nexmo = new Nexmo({
-                apiKey: '5ff68c1c',
-                apiSecret: '98M58gl906LXrf68'
-              });
-            nexmo.verify.request({
-              number: number,
-              brand: 'Vonage'
-            }, (err, result) => {
-              if (err) {
-                console.error(err)
-                reject(err)
-              } else {
-                  console.log("succesfully verified with reqId : " + result.request_id)
-                resolve(result)
-              }
-            })
-          })
     }
 
     load(id) {

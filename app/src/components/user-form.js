@@ -21,7 +21,6 @@ export default class UserForm extends Component {
                 
             },
             phone: '',
-            isVerified: true,
             reqId: '',
             code: ''
             
@@ -98,17 +97,7 @@ export default class UserForm extends Component {
                             }
                         })
                     })
-                }) /*
-                console.log("inside onsubmit function");
-                store.verifyUser(phone).then((res) => {
-                    
-                    this.setState({
-                        reqId: res.request_id
-                    })                  
-                })
-                this.setState({
-                    isVerified: false
-                })*/
+                }) 
             }
         })
     }
@@ -169,9 +158,7 @@ export default class UserForm extends Component {
                             }
                         })
                     })
-                    this.setState({
-                        isVerified: true
-                })
+                   
                 
                 })
              } else{
@@ -182,12 +169,12 @@ export default class UserForm extends Component {
 
     render() {
 
-        const {user, message, isLogin,isVerified,phone,code} = this.state;
+        const {user, message, isLogin} = this.state;
 
         return (
 
             <div className="user-form" ref={(ref) => this.ref = ref}>
-                {isVerified? <div>
+                <div>
                 <form onSubmit={this.onSubmit} method="post">
                     {message ?
                         <p className={classNames('app-message', _.get(message, 'type'))}>{_.get(message, 'body')}</p> : null}
@@ -231,15 +218,8 @@ export default class UserForm extends Component {
                         <button className="primary" type="submit">{isLogin ? 'Sign In' : 'Create new account'}</button>
                     </div>
                 </form>
-                </div> : <div>
-                     <div className="form-item"> 
-                <input onChange={this.onCodeFieldChange} value={code} placeholder="4 digit code" type={'text'} name="code" />
-                </div>
-                <div className="form-actions">
-                <button className="primary" type="button"  onClick={this.onCheckCode}>Verify</button>
-                </div>        
-                </div>
-                }
+                </div> 
+                
             </div>
 
         );
